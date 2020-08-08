@@ -11,12 +11,13 @@ export default class ImageManager {
     if (this.cache.has(url)) {
       return this.cache.get(url);
     }
-
-    return new Promise((resolve) => {
+    const loadPromise = new Promise((resolve) => {
       this.p5.loadImage(url, (image) => {
         this.cache.set(url, image);
         resolve(image);
       });
     });
+    this.cache.set(url, loadPromise);
+    return loadPromise;
   }
 }
